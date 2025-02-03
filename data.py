@@ -29,7 +29,7 @@ def ReadGeoPos(filepath: str='GMAT_Data/GeoPosData.txt') -> tuple[dict, dict]:
                 The file contains altitude, latitude, longitude, date, velocity magnitude and elapsed seconds data.
 
     Returns:
-        States: dictionary with keys ['altitude', 'latitude', 'longitude', 'date'].
+        States: dictionary with keys ['altitude', 'latitude', 'longitude', 'date', 'velocity', 'elapsed_seconds'].
                 Each key maps to a pre-allocated list of corresponding data.
     """
     # Determine the number of lines in the file (excluding the header)

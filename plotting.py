@@ -51,7 +51,7 @@ def plot_atmos_data(composition:dict, savepath=None):
 
 
 # ----------- OTHER PLOTTING FUNCTIONS ------------
-def plot_altitude_vs_massflow(states:dict, m_dot:dict):
+def plot_time_vs_massflow(states:dict, m_dot:dict, h_max:float=150):
 
     """
     This function will plot the altitude against the mass flow rate of the spacecraft.
@@ -63,12 +63,33 @@ def plot_altitude_vs_massflow(states:dict, m_dot:dict):
     - None
     """
     # Extract data
-    alts = states['altitude']
-    m_dot_values = m_dot['rho']  # Mass flow rate of air
+    time = states['elapsed_seconds']
+    m_dot_values = m_dot['rho']
+    altitude = states['altitude']
 
     # Plot the data
-    plt.plot(alts, m_dot_values)
-    plt.xlabel('Altitude (km)')
-    plt.ylabel('Air Mass Flow Rate (kg/s)')
-    plt.title('Altitude vs. Air Mass Flow Rate')
+    # Create the figure and axis
+    fig, ax1 = plt.subplots()
+
+    # Plot mass flow vs time on the left y-axis
+    ax1.plot(time, m_dot_values, 'g-', label='Mass Flow')
+    ax1.set_xlabel('Time (s)')
+    ax1.set_ylabel('Mass Flow', color='g')
+    ax1.tick_params(axis='y', labelcolor='g')
+
+    # Create a second y-axis sharing the same x-axis
+    ax2 = ax1.twinx()
+
+    # Plot altitude vs time on the right y-axis
+    ax2.plot(time, altitude, 'b-', label='Altitude')
+    ax2.set_ylabel('Altitude', color='b')
+    # ax2.set_yscale('log')  # Set the right y-axis to logarithmic scale
+    ax2.tick_params(axis='y', labelcolor='b')
+
+    # Add horizontal line to indicate the maximum altitude
+    # if h_max:
+    #     ax2.axhline(y=h_max, color='r', linestyle='--', label='Max Altitude')
+
+    # Title and display the plot
+    plt.title('Mass Flow and Altitude vs Time')
     plt.show()
