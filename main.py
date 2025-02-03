@@ -15,15 +15,14 @@ if __name__ == '__main__':
     composition = GetComposition(states)
 
     # Get mass flow and total captured mass
-    h_max = 150
+    h_max = None
     print('Calculating mass flow...')
-    m_dot, m_total = GetMassFlow(states, composition)
+    m_dot, m_total = GetMassFlow(states, composition, h_max=h_max)
     print('Mass flow calculation complete!')
-    print(max(m_dot['rho']), 'kg/s')
 
     # Print the total captured mass
     print('Total captured mass:', m_total['rho'], 'kg')
 
     # Plot the composition of the atmosphere
-    # plot_atmos_data(m_total)
-    plot_time_vs_massflow(states, m_dot)
+    plot_atmos_data(m_total)
+    # plot_time_vs_massflow(states, m_dot)

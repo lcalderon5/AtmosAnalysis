@@ -73,8 +73,9 @@ def plot_time_vs_massflow(states:dict, m_dot:dict, h_max:float=150):
 
     # Plot mass flow vs time on the left y-axis
     ax1.plot(time, m_dot_values, 'g-', label='Mass Flow')
+    ax1.set_yscale('log')  # Set the left y-axis to logarithmic scale
     ax1.set_xlabel('Time (s)')
-    ax1.set_ylabel('Mass Flow', color='g')
+    ax1.set_ylabel('Mass Flow (kg/s)', color='g')
     ax1.tick_params(axis='y', labelcolor='g')
 
     # Create a second y-axis sharing the same x-axis
@@ -82,13 +83,13 @@ def plot_time_vs_massflow(states:dict, m_dot:dict, h_max:float=150):
 
     # Plot altitude vs time on the right y-axis
     ax2.plot(time, altitude, 'b-', label='Altitude')
-    ax2.set_ylabel('Altitude', color='b')
-    # ax2.set_yscale('log')  # Set the right y-axis to logarithmic scale
+    ax2.set_ylabel('Altitude(km)', color='b')
+    ax2.set_yscale('log')  # Set the right y-axis to logarithmic scale
     ax2.tick_params(axis='y', labelcolor='b')
 
     # Add horizontal line to indicate the maximum altitude
-    # if h_max:
-    #     ax2.axhline(y=h_max, color='r', linestyle='--', label='Max Altitude')
+    if h_max:
+        ax2.axhline(y=h_max, color='r', linestyle='--', label='Max Altitude')
 
     # Title and display the plot
     plt.title('Mass Flow and Altitude vs Time')
