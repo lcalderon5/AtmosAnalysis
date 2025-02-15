@@ -9,6 +9,8 @@
 # As long as Isp*g0*eff_intake > V_orbital, the lower you go the higher surplus you can get.
 # No surprise there, but it's good to have a confirmation.
 
+# Thrust is probably the biggest limiting factor
+
 
 
 
