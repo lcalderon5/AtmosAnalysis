@@ -14,6 +14,7 @@
 
 # Import the necessary libraries
 import numpy as np
+import matplotlib.pyplot as plt
 import pymsis as msis
 
 # Problem constants
@@ -21,7 +22,9 @@ spacecraft = {
     'A_intake': 9,  # Intake area in m^2
     'eff_intake': 0.6,  # Intake efficiency, unitless
     'C_D': 2.2,  # Drag coefficient, unitless
-    'Isp': 4200  # Specific impulse in s
+    'Isp': 4200,  # Specific impulse in s
+    'T': 5,  # Thrust in N
+    'Q_rejection': 1e6  # Heat rejection rate in W (I HAVE NO IDEA WHAT THIS VALUE SHOULD BE)
 }
 
 earth = {
@@ -35,6 +38,7 @@ earth = {
 def GetRho(h: np.ndarray) -> np.ndarray:
     """
     This function will return the composition of the atmosphere at the given position points.
+    It uses the NRLMSIS model to calculate the atmospheric density at the given altitudes.
 
     Inputs:
         h: altitudes in km. This is a one dimensional array.
@@ -49,9 +53,7 @@ def GetRho(h: np.ndarray) -> np.ndarray:
     lats = np.zeros(len(h))
 
     # Obtain atmospheric composition (outputs a numpy array of size len(et) x 11)
-    print('Calculating atmospheric composition...')
     composition_data = msis.calculate(et, lons, lats, h)  # Adjust solar activity as needed
-    print('Composition calculation complete!')
 
     # Replace nan entries by 0
     composition_data = np.nan_to_num(composition_data)
@@ -111,6 +113,62 @@ def Getm_gain(h:np.ndarray, sc_parameters:dict, earth_parameters:dict) -> np.nda
 
     return m_gain, m_in, m_out
 
+
+# How low can I fly?
+def Get_minAlts(h:np.ndarray, sc_parameters:dict, earth_parameters:dict) -> tuple:
+    """
+    This function calculates the minimum altitude at which the spacecraft can fly, based on drag and heating.
+    It calculates at which altitude the drag force is equal to the thrust force.
+    It calculates at which altitude the heating rate is equal to the heat rejection rate.
+    It assumes simplified models for drag and heating. It also assumes no lift to help the spacecraft maintian its altitude.
+    It also assumes everything assumed by the Getm_gain function.
+
+    Inputs:
+        h: altitudes in km. This is a one dimensional array.
+        sc_parameters: dictionary with the spacecraft parameters.
+        earth_parameters: dictionary with the Earth parameters.
+
+    Returns:
+        h_drag: the minimum altitude due to drag in km.
+        h_heat: the minimum altitude due to heating in km.
+    """
+
+    # Unpack the spacecraft parameters
+    A = sc_parameters['A_intake']
+    C_D = sc_parameters['C_D']
+    T = sc_parameters['T']
+    Q_rejection = sc_parameters['Q_rejection']
+
+    # Unpack the Earth parameters
+    mu = earth_parameters['mu']
+    R_e = earth_parameters['R']
+
+    # Calculate the density at the different altitudes
+    rho = GetRho(h) # In kg/m^3
+
+    # Calculate the orbital velocities
+    V = np.sqrt(mu / (h + R_e)) * 1e3  # In m/s
+
+    # Calculate the drag force
+    F_drag = 0.5 * rho * V**2 * A * C_D
+
+    # Plot the drag force
+    # plt.plot(h, F_drag, label='Drag force')
+    # plt.yscale('log')
+    # plt.axhline(T, color='r', linestyle='--', label='Thrust force')
+
+    # Extract the point at which the drag force is equal to the thrust force
+    h_drag = h[np.argmax(F_drag < T)]
+
+    # Calculate the heating rate WORK IN PROGRESS
+    Q_heating = 0
+
+    # Extract the point at which the heating rate is equal to the heat rejection rate
+    h_heat = h[np.argmax(Q_heating < Q_rejection)]
+
+    return h_drag, h_heat
+
+
 if __name__ == '__main__':
 
     # Create an array of altitudes
@@ -119,24 +177,65 @@ if __name__ == '__main__':
     # Calculate the mass flow rate gain
     m_gain, m_in, m_out = Getm_gain(h, spacecraft, earth)
 
-    # Find the maximum mass flow rate gain
-    h_max = h[np.argmax(m_gain)]
-    m_max = np.max(m_gain)
+    # Calculate the minimum altitudes
+    h_drag, h_heat = Get_minAlts(h, spacecraft, earth)
 
-    print('The maximum mass flow rate gain is:', m_max, 'kg/s')
+    # Calculate the time for refueling
+    tank_load = 2000  # Tank load in kg
+    time = tank_load / m_gain # Time in seconds
+    time = time / 3600 / 24 # Time in days
+
+    # Apply element-wise logical AND to create a boolean mask
+    mask = np.logical_and(h > h_drag, h > h_heat)
+
+    # Filter the m_gain and h arrays using the mask
+    m_crop = m_gain[mask]
+    h_crop = h[mask]  # Need to filter h too
+
+    # Find the max mass flow rate and corresponding height
+    if len(m_crop) > 0:  # Ensure there are valid values
+        idx_max = np.argmax(m_crop)
+        h_max = h_crop[idx_max]
+        m_max = m_crop[idx_max]
+    else:
+        h_max = None
+        m_max = None  # Handle the case where no valid values exist
+
+    print('The maximum mass flow rate gain is:', m_max * 3600, 'kg/hour')
     print('The altitude at which this occurs is:', h_max, 'km')
 
     # Plot the results
-    import matplotlib.pyplot as plt
-    plt.plot(h, m_gain, label='Mass flow rate gain')
-    plt.plot(h, m_in, label='Intake mass flow rate')
-    plt.plot(h, m_out, label='Thruster mass flow rate')
-    plt.yscale('log')
-    plt.axhline(0, color='k', linestyle='--')
-    plt.axvline(h_max, color='r', linestyle='--', label='Altitude of max gain')
-    plt.legend()
-    plt.xlabel('Altitude (km)')
-    plt.ylabel('Mass flow rate gain (kg/s)')
-    plt.title('Mass flow rate gain vs altitude')
+
+    # Create the plot
+    fig, ax1 = plt.subplots(figsize=(12, 7))
+
+    # Plot mass flow rates on the left y-axis
+    ax1.plot(h, m_gain, label='Mass flow rate gain', color='b')
+    ax1.plot(h, m_in, label='Intake mass flow rate', color='g')
+    ax1.plot(h, m_out, label='Thruster mass flow rate', color='orange')
+
+    ax1.set_yscale('log')
+    ax1.set_xlabel('Altitude (km)')
+    ax1.set_ylabel('Mass flow rate (kg/s)', color='b')
+    ax1.tick_params(axis='y', labelcolor='b')
+
+    # Create the second y-axis
+    ax2 = ax1.twinx()
+    ax2.plot(h, time, 'r', label='Refueling time')
+    ax2.set_yscale('log')
+
+    ax2.set_ylabel('Time to refuel (days)', color='r')
+    ax2.tick_params(axis='y', labelcolor='r')
+
+    # Add vertical lines for the minimum altitudes
+    ax1.axvline(h_drag, color='k', linestyle='--', label='Min altitude due to drag')
+    ax1.axvline(h_heat, color='k', linestyle='--', label='Min altitude due to heating')
+    # ax1.axvline(h_max, color='k', linestyle='--', label='Altitude of max gain')
+
+    # Legends
+    ax1.legend(loc='upper left')
+    ax2.legend(loc='upper right')
+
+    plt.title('Mass Flow Rate and Refueling Time vs Altitude')
     plt.grid()
     plt.show()
