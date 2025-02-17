@@ -1,7 +1,7 @@
 # Lucas Calderon
 # 14/02/2025
 # I want to try and find the ideal altitude for a spacecraft to orbit in orer to find the maximum surplus of air mass flow rate.
-
+# Let's also find the optimal Isp and Thrust values, maybe relating them to power consumption.
 
 
 
@@ -230,8 +230,8 @@ if __name__ == '__main__':
     ax2.tick_params(axis='y', labelcolor='r')
 
     # Add vertical lines for the minimum altitudes
-    ax1.axvline(h_drag, color='k', linestyle='--', label='Min altitude due to drag')
-    ax1.axvline(h_heat, color='k', linestyle='--', label='Min altitude due to heating')
+    ax1.axvline(h_drag, color='magenta', linestyle='--', label='Altitude limit due to Thrust < Drag')
+    ax1.axvline(h_heat, color='lime', linestyle='--', label='Min altitude due to overheating')
     # ax1.axvline(h_max, color='k', linestyle='--', label='Altitude of max gain')
 
     # Legends
