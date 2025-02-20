@@ -35,7 +35,7 @@ spacecraft = {
     'eff_intake': 0.6,  # Intake efficiency, unitless
     'C_D': 2.2,  # Drag coefficient, unitless
     'Isp': 4200,  # Specific impulse in s
-    'T': 5,  # Thrust in N
+    'T_max': 5,  # Thrust in N
     'Q_rejection': 1e6,  # Heat rejection rate in W (I HAVE NO IDEA WHAT THIS VALUE SHOULD BE)
     'P_max': 1000,  # Maximum power consumption in W
     'eff_solar': 0.2,  # Solar panel efficiency, unitless
@@ -160,7 +160,7 @@ def Get_minAlts(h:np.ndarray, sc_parameters:dict, earth_parameters:dict) -> tupl
     # Unpack the spacecraft parameters
     A = sc_parameters['A_intake']
     C_D = sc_parameters['C_D']
-    T = sc_parameters['T']
+    T = sc_parameters['T_max']
     Q_rejection = sc_parameters['Q_rejection']
 
     # Unpack the Earth parameters
