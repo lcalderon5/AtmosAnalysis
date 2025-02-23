@@ -13,17 +13,18 @@ def plot_time_vs_massflow(h, m_gain, m_in, m_out, time, h_drag, h_heat):
     ax1.plot(h, m_out, label='Thruster mass flow rate', color='orange')
 
     ax1.set_yscale('log')
-    ax1.set_xlabel('Altitude ($km$)', fontsize=14)
-    ax1.set_ylabel('Mass flow rate ($kg/hour/m^2$)', fontsize=14)
-    ax1.tick_params(axis='y', labelsize=14)
+    ax1.set_xlabel('Altitude ($km$)', fontsize=16)
+    ax1.set_ylabel('Mass flow rate ($kg/hour/m^2$)', fontsize=16)
+    ax1.tick_params(axis='y', labelsize=16)
+    ax1.tick_params(axis='x', labelsize=16)
 
     # Create the second y-axis
     ax2 = ax1.twinx()
     ax2.plot(h, time, 'r', label='Refueling time')
     ax2.set_yscale('log')
 
-    ax2.set_ylabel('Time to refuel ($days/m^2$)', fontsize=14)
-    ax2.tick_params(axis='y', labelsize=14)
+    ax2.set_ylabel('Time to refuel ($days/m^2$)', fontsize=16)
+    ax2.tick_params(axis='y', labelsize=16)
 
     # Add vertical lines for the minimum altitudes
     # ax1.axvline(h_drag, color='magenta', linestyle='--', label='Altitude limit due to Thrust < Drag')
@@ -31,8 +32,8 @@ def plot_time_vs_massflow(h, m_gain, m_in, m_out, time, h_drag, h_heat):
     # ax1.axvline(h_max, color='k', linestyle='--', label='Altitude of max gain')
 
     # Legends
-    ax1.legend(loc='upper left')
-    ax2.legend(loc='upper right')
+    ax1.legend(loc='upper left', bbox_to_anchor=(0, 0.7), fontsize=16)
+    ax2.legend(loc='upper left', bbox_to_anchor=(0.6, 0.48), fontsize=16)
 
     ax1.grid(axis='both')
     # plt.title('Mass Flow Rate Per Intake Unit Area and Refueling Time vs Altitude')
