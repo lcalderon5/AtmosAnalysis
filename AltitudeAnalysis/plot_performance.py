@@ -22,7 +22,7 @@ def plot_time_vs_massflow(h, m_gain, m_in, m_out, time, h_drag, h_heat):
     ax2.plot(h, time, 'r', label='Refueling time')
     ax2.set_yscale('log')
 
-    ax2.set_ylabel('Time to refuel ($days$)', fontsize=14)
+    ax2.set_ylabel('Time to refuel ($days/m^2$)', fontsize=14)
     ax2.tick_params(axis='y', labelsize=14)
 
     # Add vertical lines for the minimum altitudes
