@@ -25,6 +25,11 @@
 
 # Import the necessary libraries
 import numpy as np
+import sys
+import os
+
+# Add the parent directory to the path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
 
 from plot_performance import plot_time_vs_massflow, plot_power_vs_altitude
 from classes import Regime

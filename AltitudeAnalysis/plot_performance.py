@@ -32,7 +32,7 @@ def plot_time_vs_massflow(h, m_gain, m_in, m_out, time, h_drag, h_heat):
     # ax1.axvline(h_max, color='k', linestyle='--', label='Altitude of max gain')
 
     # Legends
-    ax1.legend(loc='upper left', bbox_to_anchor=(0, 0.7), fontsize=16)
+    ax1.legend(loc='upper left', bbox_to_anchor=(0.6, 0.7), fontsize=16)
     ax2.legend(loc='upper left', bbox_to_anchor=(0.6, 0.48), fontsize=16)
 
     ax1.grid(axis='both')
