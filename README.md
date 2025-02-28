@@ -1,5 +1,5 @@
 # Introduction
-This is a little package intended to help in designing an atmospheric refueling space tug, a reusable vehicle concept that can refuel by diving into the upper layers of the atmosphere, capturing air, and subsequently using it as propellant.
+This is a little package intended to help in designing an atmospheric refueling space tug, a reusable vehicle concept that can refuel by diving into the upper layers of the atmosphere, capturing air, and subsequently using it as propellant. It includes two packages (for now). The first one is meant to analyze a specified altitude range given by the user. The second is mean to interface with GMAT and analyze orbit paths produced inside GMAT.
 
 
 # Capabilities
