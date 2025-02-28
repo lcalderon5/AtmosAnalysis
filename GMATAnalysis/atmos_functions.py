@@ -1,6 +1,12 @@
 # Lucas Calderon
 # 02/02/2025
 
+import os
+import sys
+
+# Add the parent directory to the path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
+
 import numpy as np
 import pymsis as msis
 from datetime import datetime

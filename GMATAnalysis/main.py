@@ -1,9 +1,9 @@
 # Lucas Calderon
 # 03/02/2025
 
-from atmos_functions import GetComposition, GetMassFlow
-from plotting import plot_atmos_data, plot_time_vs_massflow
-from data import ReadGeoPos, CropData
+from GMATAnalysis.atmos_functions import GetComposition, GetMassFlow
+from GMATAnalysis.plotting import plot_atmos_data, plot_time_vs_massflow
+from GMATAnalysis.data import ReadGeoPos, CropData
 
 
 if __name__ == '__main__':
