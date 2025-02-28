@@ -1,6 +1,6 @@
 # Lucas Calderon
 # 14/02/2025
-# I want to try and find the ideal altitude for a spacecraft to orbit in orer to find the maximum surplus of air mass flow rate.
+# I want to try and find the ideal altitude for a spacecraft to orbit in orer to get the maximum surplus of air mass flow rate.
 # Let's also find the optimal Isp and Thrust values, maybe relating them to power consumption.
 
 
