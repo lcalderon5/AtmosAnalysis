@@ -6,7 +6,7 @@
 
 
 # WHAT WAS FOUND:
-# As long as Isp*g0*eff_intake > V_orbital, the lower you go the higher surplus you can get.
+# As long as 2*Isp*g0*eff_intake > V_orbital*C_D, the lower you go the higher surplus you can get.
 # No surprise there, but it's good to have a confirmation.
 
 # Power is probably the biggest limiting factor
