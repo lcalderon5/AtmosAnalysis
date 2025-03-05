@@ -1,15 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import scienceplots as sp
-
-plt.style.use(['science', 'high-vis', 'no-latex'])
-# plt.rcParams.update({'figure.dpi': '100'})
+import __init__
 
 # Plot the results
 
 def plot_time_vs_massflow(h, m_gain, m_in, m_out, time, h_drag, h_heat):
     # Create the plot
-    fig, ax1 = plt.subplots(figsize=(12, 7))
+    fig, ax1 = plt.subplots()
 
 
     # Plot mass flow rates on the left y-axis
@@ -24,9 +21,8 @@ def plot_time_vs_massflow(h, m_gain, m_in, m_out, time, h_drag, h_heat):
     ax1.tick_params(axis='x')
 
     # Create the second y-axis
-    style = next(ax1.prop_cycle)  # Get the next color & linestyle
     ax2 = ax1.twinx()
-    ax2.plot(h, time, label='Refueling time', **style)
+    ax2.plot(h, time, label='Refueling time', color='#FF2C00', linestyle=':')
     ax2.set_yscale('log')
     ax2.set_ylabel('Time to refuel ($days/m^2$)')
     ax2.tick_params(axis='y')
@@ -37,10 +33,9 @@ def plot_time_vs_massflow(h, m_gain, m_in, m_out, time, h_drag, h_heat):
     # ax1.axvline(h_max, color='k', linestyle='--', label='Altitude of max gain')
 
     # Legends
-    ax1.legend(loc='upper left', bbox_to_anchor=(0.6, 0.7) )
+    ax1.legend(loc='upper left', bbox_to_anchor=(0.6, 0.7))
     ax2.legend(loc='upper left', bbox_to_anchor=(0.6, 0.48))
 
-    ax1.grid(axis='both')
     # plt.title('Mass Flow Rate Per Intake Unit Area and Refueling Time vs Altitude')
     plt.show()
 
