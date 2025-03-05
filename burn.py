@@ -4,47 +4,47 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-pastel_colors = [
-    "#6c8ebf",      # Soft Blue
-    "#8fbf6c",     # Soft Green
-    "#bf6c6c",       # Soft Red
-    "#e5a46c",    # Soft Orange
-    "#b07fb0",    # Soft Purple
-    "#c4a484",     # Soft Brown
-    "#f2d16d",    # Soft Yellow
-    "#76b7b2",      # Soft Teal
-    "#f3a6b3",      # Soft Pink
-    "#b0b7c6",      # Soft Gray
-    "#c2a2da",  # Soft Lavender
-    "#91d8e4",      # Soft Cyan
-    "#b7de79",      # Soft Lime
-    "#f7c59f",     # Soft Peach
-    "#7c83bc",    # Soft Indigo
-    "#f4a988",    # Soft Salmon
-    "#a4d4ae",      # Soft Mint
-    "#e4b363",      # Soft Gold
-]
+pastel_colors = {
+    "blue":     "#6c8ebf",      # Soft Blue
+    "green":    "#8fbf6c",     # Soft Green
+    "red":      "#bf6c6c",       # Soft Red
+    "orange":   "#e5a46c",    # Soft Orange
+    "purple":   "#b07fb0",    # Soft Purple
+    "brown":    "#c4a484",     # Soft Brown
+    "yellow":   "#f2d16d",    # Soft Yellow
+    "teal":     "#76b7b2",      # Soft Teal
+    "pink":     "#f3a6b3",      # Soft Pink
+    "gray":     "#b0b7c6",      # Soft Gray
+    "lavender": "#c2a2da",  # Soft Lavender
+    "cyan":     "#91d8e4",      # Soft Cyan
+    "lime":     "#b7de79",      # Soft Lime
+    "peach":    "#f7c59f",     # Soft Peach
+    "indigo":   "#7c83bc",    # Soft Indigo
+    "salmon":   "#f4a988",    # Soft Salmon
+    "mint":     "#a4d4ae",      # Soft Mint
+    "gold":     "#e4b363",      # Soft Gold
+}
 
-deep_colors = [
-    "#1f3b73",      # Deep Blue
-    "#1f6b3b",     # Deep Green
-    "#8b1e3f",       # Deep Red
-    "#d35400",    # Deep Orange
-    "#5e2a84",    # Deep Purple
-    "#704214",     # Deep Brown
-    "#b8860b",    # Deep Yellow
-    "#116466",      # Deep Teal
-    "#a83279",      # Deep Pink
-    "#4b4e57",      # Deep Gray
-    "#5d3a9b",  # Deep Lavender
-    "#008b8b",      # Deep Cyan
-    "#4b830d",      # Deep Lime
-    "#d3545d",     # Deep Peach
-    "#3c3f8f",    # Deep Indigo
-    "#c44536",    # Deep Salmon
-    "#0e6655",      # Deep Mint
-    "#a67c00",      # Deep Gold
-]
+deep_colors = {
+    "blue":     "#1f3b73",      # Deep Blue
+    "green":    "#1f6b3b",     # Deep Green
+    "red":      "#8b1e3f",       # Deep Red
+    "orange":   "#d35400",    # Deep Orange
+    "purple":   "#5e2a84",    # Deep Purple
+    "brown":    "#704214",     # Deep Brown
+    "yellow":   "#b8860b",    # Deep Yellow
+    "teal":     "#116466",      # Deep Teal
+    "pink":     "#a83279",      # Deep Pink
+    "gray":     "#4b4e57",      # Deep Gray
+    "lavender": "#5d3a9b",  # Deep Lavender
+    "cyan":     "#008b8b",      # Deep Cyan
+    "lime":     "#4b830d",      # Deep Lime
+    "peach":    "#d3545d",     # Deep Peach
+    "indigo":   "#3c3f8f",    # Deep Indigo
+    "salmon":   "#c44536",    # Deep Salmon
+    "mint":     "#0e6655",      # Deep Mint
+    "gold":     "#a67c00",      # Deep Gold
+}
 
 ibm_colors = [
     "#648FFF",  # Blue
