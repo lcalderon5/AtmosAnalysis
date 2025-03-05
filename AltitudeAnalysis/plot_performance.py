@@ -1,5 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import scienceplots as sp
+
+plt.style.use(['science', 'high-vis', 'no-latex'])
+# plt.rcParams.update({'figure.dpi': '100'})
 
 # Plot the results
 
@@ -7,33 +11,25 @@ def plot_time_vs_massflow(h, m_gain, m_in, m_out, time, h_drag, h_heat):
     # Create the plot
     fig, ax1 = plt.subplots(figsize=(12, 7))
 
-    colors = {
-    "m_gain": "#648FFF", 
-    "m_in":   "#785EF0", 
-    "m_out":  "#DC267F", 
-    "time":   "#FE6100", 
-    "h_drag": "#FFB000", 
-    "h_heat": "#a67c00", 
-    }
 
     # Plot mass flow rates on the left y-axis
-    ax1.plot(h, m_gain, label='Mass flow rate gain'    , color=colors['m_gain'], linewidth=1.5, linestyle='-')
-    ax1.plot(h, m_in  , label='Intake mass flow rate'  , color=colors['m_in']  , linewidth=1.5, linestyle='--')
-    ax1.plot(h, m_out , label='Thruster mass flow rate', color=colors['m_out'] , linewidth=1.5, linestyle='-.')
+    ax1.plot(h, m_gain, label='Mass flow rate gain'    )
+    ax1.plot(h, m_in  , label='Intake mass flow rate'  )
+    ax1.plot(h, m_out , label='Thruster mass flow rate')
  
     ax1.set_yscale('log')
-    ax1.set_xlabel('Altitude ($km$)', fontsize=16)
-    ax1.set_ylabel('Mass flow rate ($kg/hour/m^2$)', fontsize=16)
-    ax1.tick_params(axis='y', labelsize=16)
-    ax1.tick_params(axis='x', labelsize=16)
+    ax1.set_xlabel('Altitude ($km$)')
+    ax1.set_ylabel('Mass flow rate ($kg/hour/m^2$)')
+    ax1.tick_params(axis='y')
+    ax1.tick_params(axis='x')
 
     # Create the second y-axis
+    style = next(ax1.prop_cycle)  # Get the next color & linestyle
     ax2 = ax1.twinx()
-    ax2.plot(h, time, label='Refueling time', color=colors['time'], linewidth=1.5, linestyle=':')
+    ax2.plot(h, time, label='Refueling time', **style)
     ax2.set_yscale('log')
-
-    ax2.set_ylabel('Time to refuel ($days/m^2$)', fontsize=16)
-    ax2.tick_params(axis='y', labelsize=16)
+    ax2.set_ylabel('Time to refuel ($days/m^2$)')
+    ax2.tick_params(axis='y')
 
     # Add vertical lines for the minimum altitudes
     # ax1.axvline(h_drag, color='magenta', linestyle='--', label='Altitude limit due to Thrust < Drag')
@@ -41,8 +37,8 @@ def plot_time_vs_massflow(h, m_gain, m_in, m_out, time, h_drag, h_heat):
     # ax1.axvline(h_max, color='k', linestyle='--', label='Altitude of max gain')
 
     # Legends
-    ax1.legend(loc='upper left', bbox_to_anchor=(0.6, 0.7), fontsize=16)
-    ax2.legend(loc='upper left', bbox_to_anchor=(0.6, 0.48), fontsize=16)
+    ax1.legend(loc='upper left', bbox_to_anchor=(0.6, 0.7) )
+    ax2.legend(loc='upper left', bbox_to_anchor=(0.6, 0.48))
 
     ax1.grid(axis='both')
     # plt.title('Mass Flow Rate Per Intake Unit Area and Refueling Time vs Altitude')
@@ -54,7 +50,7 @@ def plot_power_vs_altitude(h, P_req, A_solar, h_drag, h_heat):
     fig, ax1 = plt.subplots(figsize=(12, 7))
 
     # Plot mass flow rates on the left y-axis
-    ax1.plot(h, P_req, label='Minimum required power', color='r')
+    ax1.plot(h, P_req, label='Minimum required power')
 
     ax1.set_yscale('log')
     ax1.set_xlabel('Altitude (km)')
@@ -63,7 +59,7 @@ def plot_power_vs_altitude(h, P_req, A_solar, h_drag, h_heat):
 
     # Create the second y-axis
     ax2 = ax1.twinx()
-    ax2.plot(h, A_solar, label='Required solar panel area', color='r')
+    ax2.plot(h, A_solar, label='Required solar panel area')
     ax2.set_yscale('log')
 
     ax2.set_ylabel('Required solar panel area (m^2)')
