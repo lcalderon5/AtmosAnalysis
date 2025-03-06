@@ -171,7 +171,7 @@ def Get_PowReq(Regime:Regime, sc_parameters:dict) -> np.ndarray:
 if __name__ == '__main__':
 
     # Create an array of altitudes
-    h = np.linspace(70, 200, 1000)
+    h = np.linspace(70, 300, 1000)
 
     # Create a Regime object
     regime = Regime(h, earth)

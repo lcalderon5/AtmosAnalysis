@@ -35,7 +35,7 @@ plt.rcParams.update({
     # 'font.serif': ['Times New Roman'],
 
     # Colors and line styles
-    'axes.prop_cycle' : cycl_pastel,
+    'axes.prop_cycle' : cycl_ibm,
     'lines.linewidth': 2,
 
     # Legend
@@ -86,7 +86,7 @@ def plot_time_vs_massflow(h, m_gain, m_in, m_out, time, h_drag, h_heat):
 
     # Create the second y-axis
     ax2 = ax1.twinx()
-    ax2.plot(h, time, label='Refueling time', color='#FF2C00', linestyle=':')
+    ax2.plot(h, time, label='Refueling time', color='#FE6100', linestyle=':')
     ax2.set_yscale('log')
     ax2.set_ylabel('Time to refuel ($days/m^2$)')
     ax2.tick_params(axis='y')
