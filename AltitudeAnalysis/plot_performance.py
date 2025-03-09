@@ -68,7 +68,7 @@ plt.rcParams.update({
 
 # Plotting functions
 
-def plot_time_vs_massflow(h, m_gain, m_in, m_out, time, h_drag, h_heat):
+def plot_time_vs_massflow(h, m_gain, m_in, m_out, time, h_drag, h_heat, SAVEPATH=None):
     # Create the plot
     fig, ax1 = plt.subplots()
 
@@ -92,21 +92,25 @@ def plot_time_vs_massflow(h, m_gain, m_in, m_out, time, h_drag, h_heat):
     ax2.tick_params(axis='y')
 
     # Add vertical lines for the minimum altitudes
-    # ax1.axvline(h_drag, color='magenta', linestyle='--', label='Altitude limit due to Thrust < Drag')
-    # ax1.axvline(h_heat, color='lime', linestyle='--', label='Min altitude due to overheating')
-    # ax1.axvline(h_max, color='k', linestyle='--', label='Altitude of max gain')
+    ax1.axvline(h_drag, color='magenta', linestyle='--', label='Limit: T < D')
+    ax1.axvline(h_heat, color='lime', linestyle='--', label='Limit: Overheating')
 
     # Legends
-    ax1.legend(loc='upper left', bbox_to_anchor=(0.6, 0.7))
-    ax2.legend(loc='upper left', bbox_to_anchor=(0.6, 0.48))
+    ax1.legend(loc='upper left', bbox_to_anchor=(0.6, 0.75))
+    ax2.legend(loc='upper left', bbox_to_anchor=(0.6, 0.45))
 
-    # plt.title('Mass Flow Rate Per Intake Unit Area and Refueling Time vs Altitude')
-    plt.show()
+    plt.title('Mass Flow Rate Per Intake Unit Area and Refueling Time vs Altitude')
+
+    if SAVEPATH is not None:
+        plt.savefig(SAVEPATH)
+
+    else:
+        plt.show()
 
 
-def plot_power_vs_altitude(h, P_req, A_solar, h_drag, h_heat):
+def plot_power_vs_altitude(h, P_req, A_solar, h_drag, h_heat, SAVEPATH=None):
 # Create the plot for the power requirements
-    fig, ax1 = plt.subplots(figsize=(12, 7))
+    fig, ax1 = plt.subplots()
 
     # Plot mass flow rates on the left y-axis
     ax1.plot(h, P_req, label='Minimum required power')
@@ -125,14 +129,19 @@ def plot_power_vs_altitude(h, P_req, A_solar, h_drag, h_heat):
     ax2.tick_params(axis='y')
 
     # Add lines for the minimum altitudes
-    ax1.axvline(h_drag, color='magenta', linestyle='--', label='Altitude limit due to Thrust < Drag')
-    ax1.axvline(h_heat, color='lime', linestyle='--', label='Min altitude due to overheating')
+    ax1.axvline(h_drag, color='magenta', linestyle='--', label='Limit: T < D')
+    ax1.axvline(h_heat, color='lime', linestyle='--', label='Limit: Overheating')
     # ax1.axvline(h_max, color='k', linestyle='--', label='Altitude of max gain')
 
     # Legends
-    ax1.legend(loc='upper left')
-    ax2.legend(loc='upper right')
+    ax1.legend(loc='upper left', bbox_to_anchor=(0.6, 0.75))
+    ax2.legend(loc='upper left', bbox_to_anchor=(0.6, 0.45))
 
     plt.title('Power Requirements vs Altitude')
     plt.grid()
-    plt.show()
+
+    if SAVEPATH is not None:
+        plt.savefig(SAVEPATH)
+    
+    else:
+        plt.show()

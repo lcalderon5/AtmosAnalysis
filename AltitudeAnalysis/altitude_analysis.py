@@ -176,9 +176,6 @@ if __name__ == '__main__':
     # Create a Regime object
     regime = Regime(h, earth)
 
-    # Validate the regime object
-    # regime.plot_T()
-
     # Calculate the mass flow rate gain
     m_gain, m_in, m_out = Getm_gain(regime, spacecraft)
 
@@ -214,8 +211,10 @@ if __name__ == '__main__':
         h_max = None
         m_max = None  # Handle the case where no valid values exist
 
+    # Print the results
     print('The maximum mass flow rate gain is:', m_max * 3600, 'kg/hour')
     print('The altitude at which this occurs is:', h_max, 'km')
 
+    # Plot the results
     plot_time_vs_massflow(h, m_gain, m_in, m_out, time, h_drag, h_heat)
     plot_power_vs_altitude(h, P_req, A_solar, h_drag, h_heat)
