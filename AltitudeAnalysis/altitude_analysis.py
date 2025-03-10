@@ -162,7 +162,7 @@ def Get_PowReq(Regime:Regime, sc_parameters:dict) -> np.ndarray:
 
     # Calculate the solar panel area required
     Flux = Regime.earth_params['SolarFlux']
-    A_solar = P_req_prop / eff_sol / Flux * 2  # *2 because the solar panels are not always facing the sun (kinda accountig for day and night)
+    A_solar = P_req_prop / eff_sol / Flux / np.cos(67.5)  # cosine comes from average incidence angle over an orbit
 
     return P_req_prop, A_solar
 
