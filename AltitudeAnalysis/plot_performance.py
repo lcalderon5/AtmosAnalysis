@@ -145,3 +145,6 @@ def plot_power_vs_altitude(h, P_req, A_solar, h_drag, h_heat, SAVEPATH=None):
     
     else:
         plt.show()
+
+
+

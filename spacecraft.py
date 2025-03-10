@@ -5,7 +5,7 @@
 spacecraft = {
     'A_intake': 9,  # Intake area in m^2
     'eff_intake': 0.6,  # Intake efficiency, unitless
-    'A_ref': 9,  # Reference area in m^2, it should be the same as the intake area
+    'A_ref': 9,  # Reference area in m^2
     'C_D': 2.2,  # Drag coefficient, unitless
     'Isp': 4200,  # Specific impulse in s
     'T_max': 5,  # Thrust in N
