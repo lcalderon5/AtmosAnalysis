@@ -12,5 +12,6 @@ spacecraft = {
     'Q_rejection': 1e6,  # Heat rejection rate in W (I HAVE NO IDEA WHAT THIS VALUE SHOULD BE)
     'P_max': 1000,  # Maximum power consumption in W
     'eff_solar': 0.2,  # Solar panel efficiency, unitless
-    'Tank_load': 2000  # Tank load in kg
+    'Tank_load': 2000,  # Tank load in kg
+    'n_prop': 0.5  # Propulsive efficiency, unitless
 }

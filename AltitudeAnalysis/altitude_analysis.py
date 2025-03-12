@@ -31,7 +31,7 @@ import os
 # Add the parent directory to the path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
 
-from plot_performance import plot_time_vs_massflow, plot_power_vs_altitude
+from plot_performance import plot_time_vs_massflow, plot_power_vs_altitude, plot_power_vs_time
 from classes import Regime
 from spacecraft import spacecraft
 
@@ -158,11 +158,11 @@ def Get_PowReq(Regime:Regime, sc_parameters:dict) -> np.ndarray:
     m_out = Getm_gain(Regime, sc_parameters)[2]
 
     # Calculate the minimum power required
-    P_req_prop = 0.5 * m_out * Regime.v_circ()**2
+    P_req_prop = 0.5 * m_out * Regime.v_circ()**2 / sc_parameters['n_prop']
 
     # Calculate the solar panel area required
     Flux = Regime.earth_params['SolarFlux']
-    A_solar = P_req_prop / eff_sol / Flux / np.cos(67.5)  # cosine comes from average incidence angle over an orbit
+    A_solar = P_req_prop / eff_sol / Flux / np.cos(np.deg2rad(67.5))  # cosine comes from average incidence angle over an orbit
 
     return P_req_prop, A_solar
 
@@ -179,10 +179,10 @@ if __name__ == '__main__':
     # Calculate the mass flow rate gain
     m_gain, m_in, m_out = Getm_gain(regime, spacecraft)
 
-    # Normalize with respoect to intake area, and convert to kg/hour
-    m_gain = m_gain / spacecraft['A_intake'] * 3600
-    m_in = m_in / spacecraft['A_intake'] * 3600
-    m_out = m_out / spacecraft['A_intake'] * 3600
+    # Convert to kg/hour
+    m_gain = m_gain * 3600
+    m_in = m_in * 3600
+    m_out = m_out * 3600
 
     # Calculate the minimum altitudes
     h_drag, h_heat = Get_minAlts(regime, spacecraft)
@@ -202,11 +202,13 @@ if __name__ == '__main__':
     m_crop = m_gain[mask]
     h_crop = h[mask]  # Need to filter h too
 
-    # Find the max mass flow rate and corresponding height
+    # Find the max mass flow rate and corresponding height and time of refueling
     if len(m_crop) > 0:  # Ensure there are valid values
         idx_max = np.argmax(m_crop)
         h_max = h_crop[idx_max]
         m_max = m_crop[idx_max]
+        time_min = tank_load / m_max / 24  # Time in days
+        P_min = P_req[np.where(h == h_max)][0]  # Minimum power required
     else:
         h_max = None
         m_max = None  # Handle the case where no valid values exist
@@ -214,7 +216,10 @@ if __name__ == '__main__':
     # Print the results
     print('The maximum mass flow rate gain is:', m_max * 3600, 'kg/hour')
     print('The altitude at which this occurs is:', h_max, 'km')
+    print('The minimum time to refuel is:', time_min, 'days')
+    print('The minimum power required is:', P_min, 'W')
 
     # Plot the results
     plot_time_vs_massflow(h, m_gain, m_in, m_out, time, h_drag, h_heat)
     plot_power_vs_altitude(h, P_req, A_solar, h_drag, h_heat)
+    plot_power_vs_time(P_req, time, time_min)
