@@ -108,7 +108,7 @@ def plot_power_vs_time(P_req:np.ndarray, time:np.ndarray,
     ax1.tick_params(axis='x')
 
     # Add lines for the minimum altitudes
-    ax1.axvline(t_min, color='magenta', linestyle='--', label='Minimum refueling time')
+    # ax1.axvline(t_min, color='magenta', linestyle='--', label='Minimum refueling time')
 
     # Legends
     ax1.legend(loc='upper left', bbox_to_anchor=(0.55, 0.95))
