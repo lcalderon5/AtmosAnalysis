@@ -3,6 +3,7 @@
 
 \.pytest_cache
 \__pycache__
+\AltitudeAnalysis\__pycache__
 \.venv
 \.vscode
 *.coverage
