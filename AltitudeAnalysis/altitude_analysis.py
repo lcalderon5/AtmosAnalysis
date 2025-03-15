@@ -158,7 +158,7 @@ def Get_PowReq(Regime:Regime, sc_parameters:dict) -> np.ndarray:
     m_out = Getm_gain(Regime, sc_parameters)[2]
 
     # Calculate the minimum power required
-    P_req_prop = 0.5 * Get_Drag(Regime, sc_parameters) * sc_parameters['Isp'] * sc_parameters['g0'] / sc_parameters['n_prop']
+    P_req_prop = 0.5 * Get_Drag(Regime, sc_parameters) * sc_parameters['Isp'] * earth['g0'] / sc_parameters['n_prop']
 
     # Calculate the solar panel area required
     Flux = Regime.earth_params['SolarFlux']
