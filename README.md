@@ -23,11 +23,8 @@ Calculating the spacecrafts altitude limits based on thrust and power estimation
 Calculating the refueling time given a tank volume
 
 
-# Dependencies
-Numpy
+## Virtual Environment Creation and install
+python -m venv .venv
+.venv\Scripts\activate 
+pip install -r requirements.txt
 
-Matplotlib
-
-Datetime
-
-pysmis
