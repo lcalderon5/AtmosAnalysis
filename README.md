@@ -25,7 +25,7 @@ Calculating the refueling time given a tank volume
 
 ## Virtual Environment Creation and install
 To create a virtual environment and download the dependencies run the following commands on your terminal.
-#TODO: Finish explanation
+#TODO: Finish explanations
 python -m venv .venv
 .venv\Scripts\activate 
 pip install -r requirements.txt
