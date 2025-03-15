@@ -158,7 +158,7 @@ def Get_PowReq(Regime:Regime, sc_parameters:dict) -> np.ndarray:
     m_out = Getm_gain(Regime, sc_parameters)[2]
 
     # Calculate the minimum power required
-    P_req_prop = 0.5 * m_out * Regime.v_circ()**2 / sc_parameters['n_prop']
+    P_req_prop = 0.5 * Get_Drag(Regime, sc_parameters) * sc_parameters['Isp'] * sc_parameters['g0'] / sc_parameters['n_prop']
 
     # Calculate the solar panel area required
     Flux = Regime.earth_params['SolarFlux']
@@ -214,7 +214,7 @@ if __name__ == '__main__':
         m_max = None  # Handle the case where no valid values exist
 
     # Print the results
-    print('The maximum mass flow rate gain is:', m_max * 3600, 'kg/hour')
+    print('The maximum mass flow rate gain is:', m_max, 'kg/hour')
     print('The altitude at which this occurs is:', h_max, 'km')
     print('The minimum time to refuel is:', time_min, 'days')
     print('The minimum power required is:', P_min, 'W')
