@@ -82,49 +82,45 @@ def time_analysis(Regime:Regime, spacecraft:dict, Isp:np.ndarray, T_max:np.ndarr
     ve = Isp * spacecraft['g0']
 
     # Calculate atmospheric properties
-    Ds = Get_Drag(Regime, spacecraft) # Shape (k, )
-    rhos = Regime.atmos()
-    Vs = Regime.v_circ()
+    D = Get_Drag(Regime, spacecraft) # Shape (k, ) k being the ln(h) of the regime object
+    rho = Regime.atmos()
+    V = Regime.v_circ()
 
     # Vectorized calculation
     # Indices where the thrust is higher than the drag
-    idxs = np.argmax(Ds[:, None] < T_max[None, :], axis=0)
+    idxs = np.argmax(D[None, :] <= T_max[:, None], axis=1)
 
     # Get the corresponding rho and V
-    rhos = rhos[idxs]
-    Vs = Vs[idxs]
+    rho = rho[idxs]
+    V = V[idxs]
 
     # Calculate the time to refuel
-    V_rho = Vs * rhos
+    V_rho = V * rho
     thrust_ve = T_max[None, :] / ve[:, None]
 
     time = m_tank / (A_intake * eff_intake * V_rho - thrust_ve) / 3600 / 24 # In days
 
     if PLOT:
 
-        # Create the colormap plot
+        # Calculate countour lines
+        contour_levels = [40, 50, 60, 80, 100, 150, 300, 500, 800, 1000, 1500, 2000, 4000]
+
         fig, ax1 = plt.subplots()
 
-        # Main colormap plot
-        c = ax1.pcolormesh(T_max, Isp, time, shading='naearest', 
-                            norm=mcolors.LogNorm(vmin=10, vmax=1000), cmap='viridis')
+        # Use filled contour plot for smoother appearance
+        contour_levels = [40, 50, 60, 80, 100, 150, 300, 500, 800, 1500, 4000]
+        c = ax1.imshow(time, extent=[T_max.min(), T_max.max(), Isp.min(), Isp.max()],
+               origin='lower', cmap='viridis', aspect='auto', 
+               norm=mcolors.LogNorm(vmin=40, vmax=2000))
 
-        # Define contour levels (equal time lines)
-        contour_levels = [50, 75, 100, 200, 400, 600, 1000]
-
-        # Plot contour lines
-        # contours = ax1.contour(T_max, Isp, time, levels=contour_levels, colors='red', linewidths=1)
-        contours = ax1.contourf(T_max, Isp, time, levels=contour_levels, cmap='magma', alpha=0.5)
-
-        # Add labels to contour lines
-        ax1.clabel(contours, fmt='%d days', inline=True, fontsize=8, inline_spacing=5, colors='red')
+        # Add contour lines on top for readability
+        contours = ax1.contour(T_max, Isp, time, levels=contour_levels, colors='black', linewidths=1)
+        ax1.clabel(contours, fmt='%d days', inline=True, fontsize=8, inline_spacing=10, colors='black', manual=True)
 
         # Labels and formatting
-        ax1.set_ylabel('Specific impulse $(s)$')
-        ax1.set_xlabel('Thrust $(N)$')
-        ax1.tick_params(axis='y')
-        ax1.tick_params(axis='x')
-        fig.colorbar(c, ax=ax1, label='Time to refuel $(days)$')
+        ax1.set_ylabel('Specific Impulse (s)')
+        ax1.set_xlabel('Thrust (N)')
+        fig.colorbar(c, ax=ax1, label='Time to Refuel (days)')
 
         plt.title('Refueling Time vs Isp and Thrust')
         plt.show()
@@ -132,13 +128,55 @@ def time_analysis(Regime:Regime, spacecraft:dict, Isp:np.ndarray, T_max:np.ndarr
     return time
 
 
+# Power analysis
+def power_analysis(spacecraft:dict, Isp:np.ndarray, T_max:np.ndarray, PLOT:bool=False) -> np.ndarray:
+
+    # Unpack constants
+    n_prop = spacecraft['n_prop']
+    g0 = spacecraft['g0']
+    ve = Isp * g0
+
+    # Calculate the power
+    power = T_max[None, :] * ve[:, None] / (2 * n_prop)
+
+    if PLOT:
+
+        # Convert to kW
+        power = power / 1000
+
+        # Calculate countour lines
+        contour_levels = [1, 5, 10, 15, 20, 30, 50, 70, 100, 150, 200, 300, 500, 1000, 1500]
+
+        fig, ax1 = plt.subplots()
+
+        # Use filled contour plot for smoother appearance
+        c = ax1.imshow(power, extent=[T_max.min(), T_max.max(), Isp.min(), Isp.max()],
+               origin='lower', cmap='viridis', aspect='auto', 
+               norm=mcolors.LogNorm(vmin=1, vmax=500))
+
+        # Add contour lines on top for readability
+        contours = ax1.contour(T_max, Isp, power, levels=contour_levels, colors='black', linewidths=1)
+        ax1.clabel(contours, fmt='%d kW', inline=True, fontsize=8, inline_spacing=10, colors='black', manual=True)
+
+        # Labels and formatting
+        ax1.set_ylabel('Specific Impulse (s)')
+        ax1.set_xlabel('Thrust (N)')
+        fig.colorbar(c, ax=ax1, label='Power (kW)')
+
+        plt.title('Power vs Isp and Thrust')
+        plt.show()
+
+
+    return power
+
 
 if __name__ == '__main__':
     # Create the regime
-    h = np.linspace(70, 300, 1000)
+    h = np.linspace(70, 500, 50000)
     regime = Regime(h, earth)
 
     # Analyze the time to refuel
-    T_max = np.linspace(0.5, 10, 1000)
-    Isp = np.linspace(1800, 5000, 1000)
+    T_max = np.linspace(0, 10, 1000) # Thrust in N
+    Isp = np.linspace(1500, 5000, 1000) # Specific impulse in s
     time = time_analysis(regime, spacecraft, Isp, T_max, PLOT=True)
+    power = power_analysis(spacecraft, Isp, T_max, PLOT=True)
