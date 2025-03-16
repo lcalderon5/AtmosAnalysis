@@ -103,12 +103,11 @@ def time_analysis(Regime:Regime, spacecraft:dict, Isp:np.ndarray, T_max:np.ndarr
     if PLOT:
 
         # Calculate countour lines
-        contour_levels = [40, 50, 60, 80, 100, 150, 300, 500, 800, 1000, 1500, 2000, 4000]
+        contour_levels = [40, 50, 60, 80, 100, 150, 300, 500, 800, 1500, 4000]
 
         fig, ax1 = plt.subplots()
 
         # Use filled contour plot for smoother appearance
-        contour_levels = [40, 50, 60, 80, 100, 150, 300, 500, 800, 1500, 4000]
         c = ax1.imshow(time, extent=[T_max.min(), T_max.max(), Isp.min(), Isp.max()],
                origin='lower', cmap='viridis', aspect='auto', 
                norm=mcolors.LogNorm(vmin=40, vmax=2000))
