@@ -21,6 +21,7 @@ plt.rcParams.update({
     # General
     'font.size': 16,
     'figure.figsize': (12, 7),
+    'figure.dpi': 100,
 
     # Grid
     'axes.grid': True,

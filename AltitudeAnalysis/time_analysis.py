@@ -8,6 +8,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+from pathlib import Path
 
 # Import own libraries
 from altitude_analysis import Get_Drag
@@ -24,7 +25,8 @@ earth = {
 
 
 # Refueling analysis
-def time_analysis(Regime:Regime, spacecraft:dict, Isp:np.ndarray, T_max:np.ndarray, PLOT:bool=False) -> np.ndarray:
+def time_analysis(Regime:Regime, spacecraft:dict, Isp:np.ndarray, T_max:np.ndarray, 
+                  PLOT:bool=False, SAVE:bool=True) -> np.ndarray:
 
     """
     This function calculates the time to refuel for a spacecraft over a range of thust and Isp values.
@@ -89,13 +91,21 @@ def time_analysis(Regime:Regime, spacecraft:dict, Isp:np.ndarray, T_max:np.ndarr
         fig.colorbar(c, ax=ax1, label='Time to Refuel (days)')
 
         plt.title('Refueling Time vs Isp and Thrust')
-        plt.show()
+
+        if SAVE:
+            SAVEPATH = Path(__file__).parent / "Plots"
+            Path(SAVEPATH).mkdir(parents=True, exist_ok=True)
+            plt.savefig(SAVEPATH / 'Refuel_Time_Range.png', dpi=600)
+
+        else:
+            plt.show()
 
     return time
 
 
 # Power analysis
-def power_analysis(spacecraft:dict, Isp:np.ndarray, T_max:np.ndarray, PLOT:bool=False) -> np.ndarray:
+def power_analysis(spacecraft:dict, Isp:np.ndarray, T_max:np.ndarray, 
+                   PLOT:bool=False, SAVE:bool=True) -> np.ndarray:
 
     """
     This function calculates the power needed to sustain a spacecraft over a range of thust and Isp values."
@@ -144,7 +154,14 @@ def power_analysis(spacecraft:dict, Isp:np.ndarray, T_max:np.ndarray, PLOT:bool=
         fig.colorbar(c, ax=ax1, label='Power (kW)')
 
         plt.title('Power vs Isp and Thrust')
-        plt.show()
+
+        if SAVE:
+            SAVEPATH = Path(__file__).parent / "Plots"
+            Path(SAVEPATH).mkdir(parents=True, exist_ok=True)
+            plt.savefig(SAVEPATH / 'Power_Range.png', dpi=600)
+
+        else:
+            plt.show()
 
 
     return power
