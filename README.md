@@ -34,3 +34,7 @@ python -m venv .venv
 
 pip install -r requirements.txt
 
+
+To update requirements list:
+pip freeze > requirements.txt
+
