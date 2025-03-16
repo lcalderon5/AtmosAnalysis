@@ -26,6 +26,21 @@ earth = {
 # Refueling analysis
 def time_analysis(Regime:Regime, spacecraft:dict, Isp:np.ndarray, T_max:np.ndarray, PLOT:bool=False) -> np.ndarray:
 
+    """
+    This function calculates the time to refuel for a spacecraft over a range of thust and Isp values.
+    Important to understand the the refuel time will be affected by the spacecraft constants. Including intake area, intake efficiency and aerodynamic properties.
+
+    ### INPUTS:
+        Regime: Regime object with the atmospheric properties. This object must be created before calling the function. The regime object should be created with a very large number of oints for height to get smooth plotting.
+        spacecraft: dictionary with the spacecraft parameters
+        Isp: specific impulse in s
+        T_max: Thrust in N
+        PLOT: boolean to plot the results
+
+    ### OUTPUTS:
+        time: time to refuel in days
+    """
+
     # Unpack constants
     m_tank = spacecraft['Tank_load']
     eff_intake = spacecraft['eff_intake']
@@ -37,7 +52,8 @@ def time_analysis(Regime:Regime, spacecraft:dict, Isp:np.ndarray, T_max:np.ndarr
     rho = Regime.atmos()
     V = Regime.v_circ()
 
-    # Vectorized calculation
+    # Vectorized calculation 
+    # #TODO: improve the way I get the point of T=D
     # Indices where the thrust is higher than the drag
     idxs = np.argmax(D[None, :] <= T_max[:, None], axis=1)
 
@@ -80,6 +96,20 @@ def time_analysis(Regime:Regime, spacecraft:dict, Isp:np.ndarray, T_max:np.ndarr
 
 # Power analysis
 def power_analysis(spacecraft:dict, Isp:np.ndarray, T_max:np.ndarray, PLOT:bool=False) -> np.ndarray:
+
+    """
+    This function calculates the power needed to sustain a spacecraft over a range of thust and Isp values."
+    The power only depends on the thrust and specific impulse as well as the constant propulsive efficiency.
+
+    ### INPUTS:
+        spacecraft: dictionary with the spacecraft parameters
+        Isp: specific impulse in s
+        T_max: Thrust in N
+        PLOT: boolean to plot the results
+
+    ### OUTPUTS:
+        power: power in W
+    """
 
     # Unpack constants
     n_prop = spacecraft['n_prop']
