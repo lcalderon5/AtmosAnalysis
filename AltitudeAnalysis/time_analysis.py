@@ -1,6 +1,8 @@
 # Lucas Calderon
 # 15/03/2025
-# This file will do an analysis of time needed to refuel based on spacecraft parameters and altitude.
+# This file will do an analysis of time and power needed to refuel and based on spacecraft parameters.
+# It can be run as a standalone script or imported as a module.
+# It can be used to produce qualitative plots or to analyze an actual spacecraft.
 
 # Import the necessary libraries
 import numpy as np
@@ -19,57 +21,6 @@ earth = {
     'g0': 9.81,  # Standard gravity in m/s^2
     'SolarFlux': 1361  # Solar constant in W/m^2
 }
-
-# Refuel time function
-def time_refuel(Regime:Regime, spaceraft:dict, PLOT:bool=False) -> np.ndarray:
-
-    # Unpack constants
-    m_tank = spacecraft['Tank_load']
-    eff_intake = spacecraft['eff_intake']
-    A_intake = spacecraft['A_intake']
-    T_max = spacecraft['T_max']
-    Isp = spacecraft['Isp']
-    g0 = spacecraft['g0']
-    ve = Isp * g0
-
-    # Calculate the drag over the regime
-    D = Get_Drag(Regime, spacecraft)
-
-    # Calculate the T=D point
-    h_drag = Regime.h[np.argmax(D < T_max)]
-
-    # Calculate the density
-    rho = Regime.atmos()
-
-    # Calculate the orbital velocity
-    V = Regime.v_circ()
-
-    # Calculate the time to refuel
-    time = m_tank / (A_intake * eff_intake * V * rho - D / ve) / 3600 / 24 # In days
-
-    if PLOT:
-        # Create the plot
-        fig, ax1 = plt.subplots()
-
-        # Plot the refueling time
-        ax1.plot(Regime.h, time, label='Refueling time', color='#FE6100', linestyle=':')
-        ax1.set_yscale('log')
-        ax1.set_xlabel('Altitude ($km$)')
-        ax1.set_ylabel('Time to refuel ($days$)')
-        ax1.tick_params(axis='y')
-        ax1.tick_params(axis='x')
-
-        # Add vertical lines for the minimum altitudes
-        ax1.axvline(h_drag, color='magenta', linestyle='--', label='Limit: T < D')
-
-        # Legends
-        ax1.legend(loc='upper left', bbox_to_anchor=(0.6, 0.75))
-
-        plt.title('Refueling Time vs Altitude')
-
-        plt.show()
-
-    return time
 
 
 # Refueling analysis
